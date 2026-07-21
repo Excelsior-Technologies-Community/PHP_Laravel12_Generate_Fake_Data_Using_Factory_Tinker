@@ -12,7 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('author');
+            $table->foreignId('author_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             $table->boolean('is_published')->default(true);
             $table->integer('views')->default(0);
             $table->timestamp('published_at')->nullable();
