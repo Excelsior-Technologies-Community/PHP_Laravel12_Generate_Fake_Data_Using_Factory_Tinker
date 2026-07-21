@@ -276,6 +276,84 @@
 
         </div>
 
+        <!-- Advanced Analytics -->
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card dashboard-card bg-dark">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-eye-fill"></i>
+
+                        <h6>Total Views</h6>
+
+                        <h2>{{ number_format($totalViews) }}</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card dashboard-card bg-secondary">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-bar-chart-fill"></i>
+
+                        <h6>Average Views</h6>
+
+                        <h2>{{ number_format($averageViews) }}</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card dashboard-card bg-danger">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-fire"></i>
+
+                        <h6>Highest Views</h6>
+
+                        <h2>{{ number_format($highestViews) }}</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card dashboard-card bg-success">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-star-fill"></i>
+
+                        <h6>Posts (1000+ Views)</h6>
+
+                        <h2>{{ $popularPosts }}</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
         <!-- Search Box -->
 
         <div class="search-box">
@@ -291,7 +369,7 @@
                             name="search"
                             value="{{ request('search') }}"
                             class="form-control"
-                            placeholder="Search title, author or content">
+                            placeholder="Search title, user or content">
 
                     </div>
 
@@ -322,19 +400,26 @@
                     <div class="col-md-4">
 
                         <button class="btn btn-primary">
-
                             <i class="bi bi-search"></i>
-
                             Search
-
                         </button>
 
-                        <a href="{{ route('posts.index') }}" class="btn btn-secondary">
-
+                        <a href="{{ route('posts.index') }}"
+                            class="btn btn-secondary">
                             <i class="bi bi-arrow-clockwise"></i>
-
                             Clear
+                        </a>
 
+                        <a href="{{ route('posts.export.csv') }}"
+                            class="btn btn-success">
+                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                            CSV
+                        </a>
+
+                        <a href="{{ route('posts.export.json') }}"
+                            class="btn btn-dark">
+                            <i class="bi bi-filetype-json"></i>
+                            JSON
                         </a>
 
                     </div>
@@ -342,6 +427,34 @@
                 </div>
 
             </form>
+
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+
+                    <strong>Published Posts Percentage</strong>
+
+                    <strong>{{ $publishedPercentage }}%</strong>
+
+                </div>
+
+                <div class="progress mt-3" style="height:22px;">
+
+                    <div class="progress-bar bg-success"
+
+                        style="width: {{ $publishedPercentage }}%;">
+
+                        {{ $publishedPercentage }}%
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -395,7 +508,7 @@
 
                             <i class="bi bi-person-circle text-primary"></i>
 
-                            {{ $post->user->name ?? $post->author }}
+                            {{ $post->user?->name ?? 'N/A' }}
 
                         </td>
 
@@ -530,6 +643,122 @@
                 @endif
 
             </div>
+
+            <hr class="my-5">
+
+            <h4 class="mb-3">
+
+                <i class="bi bi-trophy-fill text-warning"></i>
+
+                Top 5 Most Viewed Posts
+
+            </h4>
+
+            <div class="table-responsive mb-5">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Title</th>
+
+                            <th>Author</th>
+
+                            <th>Views</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach($topViewedPosts as $post)
+
+                        <tr>
+
+                            <td>{{ $loop->iteration }}</td>
+
+                            <td>{{ $post->title }}</td>
+
+                            <td>{{ $post->user?->name ?? 'N/A' }}</td>
+
+                            <td>
+
+                                <span class="badge bg-danger">
+
+                                    {{ number_format($post->views) }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <h4 class="mb-3">
+
+                <i class="bi bi-clock-history text-primary"></i>
+
+                Latest Generated Posts
+
+            </h4>
+
+            <div class="table-responsive mb-4">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead class="table-primary">
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Title</th>
+
+                            <th>Author</th>
+
+                            <th>Created</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach($recentPosts as $post)
+
+                        <tr>
+
+                            <td>{{ $post->id }}</td>
+
+                            <td>{{ $post->title }}</td>
+
+                            <td>{{ $post->user?->name ?? 'N/A' }}</td>
+
+                            <td>{{ $post->created_at->format('d M Y H:i') }}</td>
+
+                        </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
 
         </div>
 

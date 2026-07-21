@@ -15,7 +15,7 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->sentence(4),
             'content' => $this->faker->paragraphs(3, true),
-            'author' => $this->faker->name(),
+            'author_id' => \App\Models\User::factory(),
             'is_published' => $this->faker->boolean(80), // 80% chance of true
             'views' => $this->faker->numberBetween(0, 10000),
             'published_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
