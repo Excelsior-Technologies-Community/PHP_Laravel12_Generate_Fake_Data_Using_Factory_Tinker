@@ -157,109 +157,55 @@
     <div class="row g-4">
 
         <div class="col-lg-3 col-md-6">
-
             <div class="card info-card">
-
                 <div class="card-body">
-
                     <div class="icon-box bg-blue">
                         <i class="bi bi-person-fill"></i>
                     </div>
-
-                    <div class="label">
-                        Author
-                    </div>
-
-                    <div class="value">
-                        {{ $post->user->name ?? $post->author }}
-                    </div>
-
+                    <div class="label">Author</div>
+                    <div class="value">{{ $post->user->name ?? 'N/A' }}</div>
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-lg-3 col-md-6">
-
             <div class="card info-card">
-
                 <div class="card-body">
+                    <div class="icon-box" style="background: #8b5cf6;">
+                        <i class="bi bi-tag-fill"></i>
+                    </div>
+                    <div class="label">Category</div>
+                    <div class="value">{{ $post->category ?? 'General' }}</div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-lg-3 col-md-6">
+            <div class="card info-card">
+                <div class="card-body">
                     <div class="icon-box bg-success-custom">
                         <i class="bi bi-eye-fill"></i>
                     </div>
-
-                    <div class="label">
-                        Total Views
-                    </div>
-
-                    <div class="value">
-                        {{ number_format($post->views) }}
-                    </div>
-
+                    <div class="label">Total Views</div>
+                    <div class="value">{{ number_format($post->views) }}</div>
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-lg-3 col-md-6">
-
             <div class="card info-card">
-
                 <div class="card-body">
-
-                    <div class="icon-box bg-warning-custom">
-                        <i class="bi bi-calendar-event-fill"></i>
-                    </div>
-
-                    <div class="label">
-                        Published On
-                    </div>
-
-                    <div class="value" style="font-size:17px;">
-                        {{ optional($post->published_at)->format('d M Y') ?? 'Not Published' }}
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-
-            <div class="card info-card">
-
-                <div class="card-body">
-
                     <div class="icon-box bg-danger-custom">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
-
-                    <div class="label">
-                        Status
-                    </div>
-
+                    <div class="label">Status</div>
                     @if($post->is_published)
-
-                        <span class="badge bg-success status-badge">
-                            Published
-                        </span>
-
+                        <span class="badge bg-success status-badge">Published</span>
                     @else
-
-                        <span class="badge bg-danger status-badge">
-                            Unpublished
-                        </span>
-
+                        <span class="badge bg-secondary status-badge">Unpublished</span>
                     @endif
-
                 </div>
-
             </div>
-
         </div>
 
     </div>

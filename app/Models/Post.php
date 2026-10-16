@@ -11,6 +11,7 @@ class Post extends Model
 
     protected $fillable = [
         'title',
+        'category',
         'content',
         'author_id',
         'is_published',
@@ -26,5 +27,25 @@ class Post extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    public function scopeUnpublished($query)
+    {
+        return $query->where('is_published', false);
+    }
+
+    public function scopePopular($query, $minViews = 5000)
+    {
+        return $query->where('views', '>=', $minViews);
+    }
+
+    public function scopeByCategory($query, $category)
+    {
+        return $query->where('category', $category);
     }
 }
